@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Prison Of Trenches</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ LOADER ============ -->
+<div id="loader">
+  <div class="lblock"></div>
+  <p>PRISON OF TRENCHES</p>
+  <small id="loaderMsg">DIGGING THE YARD…</small>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<!-- ============ LANDING ============ -->
+<section id="landing">
+  <div class="dust" id="dust"></div>
+
+  <nav class="land-nav">
+    <div class="brand">
+      <img src="assets/logo.png" alt="Prison Of Trenches logo">
+      <div class="b-text">
+        <strong>PRISON OF<br>TRENCHES</strong>
+        <span>ON-CHAIN YARD</span>
+      </div>
+    </div>
+    <div class="links">
+      <a href="#lore">THE LORE</a>
+      <a href="#rooms" id="navRooms">THE ROOMS</a>
+      <a href="#" id="navWallet">CONNECT WALLET</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">A voxel sentence you choose to serve</div>
+      <h1>DO YOUR<br><span class="grass">TIME</span> IN THE<br><span class="dirt">TRENCHES</span></h1>
+      <p class="lede">Every block was dug by someone who couldn't make it out. Build your inmate, connect your wallet, and step into the yard. Two rooms are open today — pick where you want to be seen.</p>
+      <div class="hero-cta">
+        <button class="btn" id="enterYard">ENTER THE YARD</button>
+        <button class="btn ghost" id="connectTop">CONNECT WALLET</button>
+      </div>
+    </div>
+    <div class="hero-cube">
+      <canvas id="cubeCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="land-stats">
+    <div class="stat"><div class="n" id="statInmates">12,408</div><div class="l">INMATES DIGGING</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">ROOMS OPEN</div></div>
+    <div class="stat"><div class="n">∞</div><div class="l">BLOCKS TO MINE</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">SUCCESSFUL ESCAPES</div></div>
+  </div>
+
+  <div class="lore" id="lore">
+    <div class="card">
+      <div class="tag">/ 01 INTAKE</div>
+      <h3>Build your inmate</h3>
+      <p>Skin, hair, jumpsuit, and build — assemble a fully blocky 3D body with detailed hands, legs, feet, and hair before you're processed in.</p>
+    </div>
+    <div class="card">
+      <div class="tag">/ 02 PROCESSING</div>
+      <h3>Connect your wallet</h3>
+      <p>Link a Solana wallet to stamp your inmate number on-chain. No wallet? Walk in as an anonymous John Doe and serve unidentified.</p>
+    </div>
+    <div class="card">
+      <div class="tag">/ 03 THE YARD</div>
+      <h3>Walk, talk, do time</h3>
+      <p>Move with WASD, jump the fences, sit on the dirt. Talk to whoever's in the room by voice or text. Someone is always listening.</p>
+    </div>
+  </div>
+
+  <footer class="land-foot">
+    <span>© PRISON OF TRENCHES — NO ONE LEAVES</span>
+    <span id="walletFoot">WALLET: NOT CONNECTED</span>
+  </footer>
+</section>
+
+<!-- ============ GATE (room choice) ============ -->
+<section id="gate">
+  <div class="gate-head">
+    <h2>CHOOSE YOUR ROOM</h2>
+    <p>BOTH DOORS ARE UNLOCKED. ONLY ONE OF THEM IS KIND.</p>
+  </div>
+  <div class="gate-grid" id="rooms">
+    <div class="door interrogation" data-room="interrogation">
+      <canvas class="scene" id="doorInterrogation"></canvas>
+      <div class="veil"></div>
+      <div class="content">
+        <div class="kind">/ SMALL ROOM · LOW LIGHT</div>
+        <h3>THE INTERROGATION ROOM</h3>
+        <p>One bulb. One table. One chair too many. The walls are close and the questions are closer. Whatever you say in here is on the record.</p>
+        <span class="enter">STEP INSIDE ▸</span>
+      </div>
+    </div>
+    <div class="door field" data-room="field">
+      <canvas class="scene" id="doorField"></canvas>
+      <div class="veil"></div>
+      <div class="content">
+        <div class="kind">/ OPEN YARD · MORNING LIGHT</div>
+        <h3>THE GREENFIELD</h3>
+        <p>Out back, the grass is wet and the fence is tall. Morning sun, fresh air, room to run. The freest you'll feel without actually being free.</p>
+        <span class="enter">STEP OUTSIDE ▸</span>
+      </div>
+    </div>
+  </div>
+  <div class="gate-back">
+    <button id="gateBack">◂ BACK TO THE GATE</button>
+  </div>
+</section>
+
+<!-- ============ CHARACTER CREATOR ============ -->
+<section id="creator">
+  <div class="cc-preview">
+    <canvas id="ccCanvas"></canvas>
+    <div class="hint">DRAG TO SPIN · SCROLL TO ZOOM</div>
+  </div>
+  <aside class="cc-panel">
+    <h2>INTAKE & PROCESSING</h2>
+    <div class="sub">ASSEMBLE INMATE — ALL PARTS REQUIRED</div>
+
+    <div class="cc-group">
+      <label class="cc-label" for="ccName">Inmate name</label>
+      <input class="cc-name" id="ccName" maxlength="16" placeholder="JOHN DOE" value="JOHN DOE">
+    </div>
+
+    <div class="cc-group" role="group" aria-label="Skin tone">
+      <span class="cc-label">Skin tone</span>
+      <div class="swatches" id="skinSwatches"></div>
+    </div>
+
+    <div class="cc-group" role="group" aria-label="Hair style">
+      <span class="cc-label">Hair style</span>
+      <div class="pickrow" id="hairStyles"></div>
+    </div>
+    <div class="cc-group" role="group" aria-label="Hair color">
+      <span class="cc-label">Hair color</span>
+      <div class="swatches" id="hairSwatches"></div>
+    </div>
+
+    <div class="cc-group" role="group" aria-label="Jumpsuit">
+      <span class="cc-label">Jumpsuit</span>
+      <div class="pickrow" id="suitStyles"></div>
+    </div>
+    <div class="cc-group" role="group" aria-label="Jumpsuit color">
+      <span class="cc-label">Jumpsuit color</span>
+      <div class="swatches" id="suitSwatches"></div>
+    </div>
+
+    <div class="cc-group">
+      <label class="cc-label" for="buildSlider">Build · <span id="buildVal">MEDIUM</span></label>
+      <input type="range" class="slider" id="buildSlider" min="0" max="2" step="1" value="1">
+    </div>
+
+    <div class="cc-group">
+      <label class="cc-label" for="heightSlider">Height · <span id="heightVal">5'10"</span></label>
+      <input type="range" class="slider" id="heightSlider" min="0" max="4" step="1" value="2">
+    </div>
+
+    <div class="cc-actions">
+      <button class="btn ghost" id="ccRandom">RANDOMIZE</button>
+      <button class="btn" id="ccConfirm">DO MY TIME ▸</button>
+    </div>
+  </aside>
+</section>
+
+<!-- ============ GAME ============ -->
+<section id="game">
+  <canvas id="gameCanvas"></canvas>
+  <div class="hud">
+    <div class="hud-top">
+      <div class="room-badge" id="roomBadge">
+        ROOM
+        <span id="roomSub">—</span>
+      </div>
+      <div class="right">
+        <div class="pill" id="walletPill"><button id="pillWallet">CONNECT WALLET</button></div>
+        <div class="pill live">YOU ARE BEING WATCHED</div>
+      </div>
+    </div>
+
+    <div class="controls-card">
+      <div><b>MOVE</b> <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span></div>
+      <div><b>JUMP</b> <span class="key">␣</span> &nbsp; <b>SIT</b> <span class="key">F</span></div>
+      <div><b>LOOK</b> drag mouse &nbsp; <b>CHAT</b> <span class="key">T</span></div>
+    </div>
+
+    <div class="chat-dock">
+      <div class="chat-log" id="chatLog"></div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="Say something to the room…">
+        <button class="chat-mic" id="chatMic" title="Hold to talk">MIC</button>
+        <button class="chat-send" id="chatSend">SEND</button>
+      </div>
+    </div>
+
+    <button class="leave-btn" id="leaveBtn">▸ BACK TO GATE</button>
+  </div>
+</section>
+
+<!-- ============ THREE.JS + APP ============ -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.module.min.js"
+  }
+}
+</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
