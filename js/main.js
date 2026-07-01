@@ -15,7 +15,8 @@ import { Wallet } from './wallet.js';
 const state = {
   config: defaultConfig(),
   room: null,            // 'interrogation' | 'field'
-  wallet: new Wallet()
+  wallet: new Wallet(),
+  prisonbull: 0          // $PRISONBULL earned from buckets in the yard
 };
 
 // ---------- The Black Bull coin (pump.fun) ----------
@@ -654,7 +655,15 @@ class Game {
         const dx = b.pos.x - hoop.x, dz = b.pos.z - hoop.z;
         if (Math.hypot(dx, dz) < hr + 0.18) {
           b.scored = true; b.buckets++;
-          toast('SWISH! Buckets: ' + b.buckets);
+          b.streak = (b.streak || 0) + 1;
+          // 100 $PRISONBULL per bucket, +50 for each in the streak (capped x5)
+          const mult = Math.min(b.streak, 5);
+          const reward = 100 + (mult - 1) * 50;
+          state.prisonbull += reward;
+          updateEarnUI();
+          toast(b.streak > 1
+            ? 'SWISH! x' + b.streak + ' streak — +' + reward + ' $PRISONBULL'
+            : 'SWISH! +' + reward + ' $PRISONBULL');
         }
       }
       b.prevY = b.pos.y;
@@ -662,7 +671,10 @@ class Game {
       if (b.pos.y <= b.R) {
         b.pos.y = b.R;
         if (Math.abs(b.vel.y) > 1.5) { b.vel.y *= -0.55; b.vel.x *= 0.7; b.vel.z *= 0.7; }
-        else { b.state = 'dead'; b.timer = 1.1; b.vel.set(0, 0, 0); }
+        else {
+          if (!b.scored) b.streak = 0;   // missed shot breaks the streak
+          b.state = 'dead'; b.timer = 1.1; b.vel.set(0, 0, 0);
+        }
       }
     } else if (b.state === 'dead') {
       b.timer -= dt;
@@ -800,6 +812,10 @@ async function doConnect() {
   }
   refreshWalletUI();
 }
+function updateEarnUI() {
+  const el = $('#earnBal');
+  if (el) el.textContent = state.prisonbull.toLocaleString();
+}
 function refreshWalletUI() {
   const short = state.wallet.short();
   const label = short ? ('● ' + short) : 'CONNECT WALLET';
@@ -841,6 +857,7 @@ function enterRoom(room) {
     $('#roomBadge').childNodes[0].nodeValue = map[room][0] + ' ';
     $('#roomSub').textContent = map[room][1];
     refreshWalletUI();
+    updateEarnUI();
     chat.setRoom(room, state.config.name);
     // (re)build game
     if (game) game.dispose();
