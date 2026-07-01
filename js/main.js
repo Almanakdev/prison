@@ -16,13 +16,13 @@ const state = {
   config: defaultConfig(),
   room: null,            // 'interrogation' | 'field'
   wallet: new Wallet(),
-  prisonbull: 0          // $PRISONBULL earned from buckets in the yard
+  prisonbull: 0          // $BBPRISON earned from buckets in the yard
 };
 
 // ---------- The Black Bull coin (pump.fun) ----------
 const COIN = {
-  // paste the token's Solana contract address here when it's live:
-  ca: '',
+  // the token's Solana contract address:
+  ca: 'D3E3UMoFCBAZ59dXUWQbPxFcEpUQWDsy7gtZA2Vjpump',
   // base pump.fun page — when a CA is set, links straight to the coin page
   pumpfun: 'https://pump.fun'
 };
@@ -656,14 +656,14 @@ class Game {
         if (Math.hypot(dx, dz) < hr + 0.18) {
           b.scored = true; b.buckets++;
           b.streak = (b.streak || 0) + 1;
-          // 100 $PRISONBULL per bucket, +50 for each in the streak (capped x5)
+          // 100 $BBPRISON per bucket, +50 for each in the streak (capped x5)
           const mult = Math.min(b.streak, 5);
           const reward = 100 + (mult - 1) * 50;
           state.prisonbull += reward;
           updateEarnUI();
           toast(b.streak > 1
-            ? 'SWISH! x' + b.streak + ' streak — +' + reward + ' $PRISONBULL'
-            : 'SWISH! +' + reward + ' $PRISONBULL');
+            ? 'SWISH! x' + b.streak + ' streak — +' + reward + ' $BBPRISON'
+            : 'SWISH! +' + reward + ' $BBPRISON');
         }
       }
       b.prevY = b.pos.y;
