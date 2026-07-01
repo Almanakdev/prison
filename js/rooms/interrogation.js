@@ -1,5 +1,5 @@
 // ============================================================
-// rooms/interrogation.js — dark small interrogation room
+// rooms/interrogation.js — THE LIQUIDATION ROOM (dark interrogation)
 // ============================================================
 import * as THREE from 'three';
 
@@ -122,9 +122,9 @@ export function buildInterrogation(scene) {
     spawn: new THREE.Vector3(0, 0, 3.2),
     spawnLook: new THREE.Vector3(0, 1, 0),
     npc: {
-      name: 'DETECTIVE GRIM',
+      name: 'THE BLACK BULL',
       pos: new THREE.Vector3(0, 0, -2.4),
-      color: '#6b7a8c'
+      color: '#1c1f24'
     },
     animate: (t) => {
       // bulb flicker

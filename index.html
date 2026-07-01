@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Prison Of Trenches</title>
-<link rel="icon" href="assets/logo.png">
+<title>Black Bull Prison</title>
+<link rel="icon" href="assets/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -15,8 +15,8 @@
 <!-- ============ LOADER ============ -->
 <div id="loader">
   <div class="lblock"></div>
-  <p>PRISON OF TRENCHES</p>
-  <small id="loaderMsg">DIGGING THE YARD…</small>
+  <p>BLACK BULL PRISON</p>
+  <small id="loaderMsg">PROCESSING PAPER HANDS…</small>
 </div>
 
 <!-- ============ TOAST ============ -->
@@ -28,26 +28,28 @@
 
   <nav class="land-nav">
     <div class="brand">
-      <img src="assets/logo.png" alt="Prison Of Trenches logo">
+      <img src="assets/logo.svg" alt="Black Bull Prison logo">
       <div class="b-text">
-        <strong>PRISON OF<br>TRENCHES</strong>
-        <span>ON-CHAIN YARD</span>
+        <strong>BLACK BULL<br>PRISON</strong>
+        <span>THE BLACK BULL · ON SOLANA</span>
       </div>
     </div>
     <div class="links">
       <a href="#lore">THE LORE</a>
-      <a href="#rooms" id="navRooms">THE ROOMS</a>
+      <a href="#rooms" id="navRooms">THE CELLS</a>
       <a href="#" id="navWallet">CONNECT WALLET</a>
+      <a href="#" id="navBuy" class="hot">BUY COIN</a>
     </div>
   </nav>
 
   <div class="hero">
     <div class="hero-copy">
-      <div class="eyebrow">A voxel sentence you choose to serve</div>
-      <h1>DO YOUR<br><span class="grass">TIME</span> IN THE<br><span class="dirt">TRENCHES</span></h1>
-      <p class="lede">Every block was dug by someone who couldn't make it out. Build your inmate, connect your wallet, and step into the yard. Two rooms are open today — pick where you want to be seen.</p>
+      <div class="eyebrow">A sentence for selling too soon</div>
+      <h1>YOU SOLD<br><span class="grass">THE BLACK BULL</span><br>TOO <span class="dirt">EARLY</span></h1>
+      <p class="lede">Every cell in here holds a paper hand — someone who took profit before the run. The Black Bull keeps them locked up while the chart prints green without them. Build your inmate, connect your wallet, and do your time.</p>
       <div class="hero-cta">
-        <button class="btn" id="enterYard">ENTER THE YARD</button>
+        <a class="btn buy" id="buyCoin" href="https://pump.fun" target="_blank" rel="noopener">BUY COIN ▸</a>
+        <button class="btn" id="enterYard">ENTER THE PRISON</button>
         <button class="btn ghost" id="connectTop">CONNECT WALLET</button>
       </div>
     </div>
@@ -57,32 +59,32 @@
   </div>
 
   <div class="land-stats">
-    <div class="stat"><div class="n" id="statInmates">12,408</div><div class="l">INMATES DIGGING</div></div>
-    <div class="stat"><div class="n">2</div><div class="l">ROOMS OPEN</div></div>
-    <div class="stat"><div class="n">∞</div><div class="l">BLOCKS TO MINE</div></div>
-    <div class="stat"><div class="n">0</div><div class="l">SUCCESSFUL ESCAPES</div></div>
+    <div class="stat"><div class="n" id="statInmates">12,408</div><div class="l">PAPER HANDS JAILED</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">CELLS OPEN</div></div>
+    <div class="stat"><div class="n">∞</div><div class="l">GAINS MISSED</div></div>
+    <div class="stat"><div class="n">0</div><div class="l">DIAMOND HANDS</div></div>
   </div>
 
   <div class="lore" id="lore">
     <div class="card">
       <div class="tag">/ 01 INTAKE</div>
-      <h3>Build your inmate</h3>
-      <p>Skin, hair, jumpsuit, and build — assemble a fully blocky 3D body with detailed hands, legs, feet, and hair before you're processed in.</p>
+      <h3>Build your paper hand</h3>
+      <p>Skin, hair, jumpsuit, and build — assemble a fully blocky 3D body with detailed hands, legs, feet, and hair before the Bull processes you in.</p>
     </div>
     <div class="card">
       <div class="tag">/ 02 PROCESSING</div>
       <h3>Connect your wallet</h3>
-      <p>Link a Solana wallet to stamp your inmate number on-chain. No wallet? Walk in as an anonymous John Doe and serve unidentified.</p>
+      <p>Link a Solana wallet so the Bull can read your sell. No wallet? Walk in as an anonymous Paper Hand and serve your sentence unidentified.</p>
     </div>
     <div class="card">
-      <div class="tag">/ 03 THE YARD</div>
-      <h3>Walk, talk, do time</h3>
-      <p>Move with WASD, jump the fences, sit on the dirt. Talk to whoever's in the room by voice or text. Someone is always listening.</p>
+      <div class="tag">/ 03 THE PEN</div>
+      <h3>Walk, talk, cope</h3>
+      <p>Move with WASD, jump the fences, sit in the dirt. Explain your sell to whoever's in the cell by voice or text. The Bull is always listening.</p>
     </div>
   </div>
 
   <footer class="land-foot">
-    <span>© PRISON OF TRENCHES — NO ONE LEAVES</span>
+    <span>© BLACK BULL PRISON — DIAMOND HANDS ONLY LEAVE</span>
     <span id="walletFoot">WALLET: NOT CONNECTED</span>
   </footer>
 </section>
@@ -90,8 +92,8 @@
 <!-- ============ GATE (room choice) ============ -->
 <section id="gate">
   <div class="gate-head">
-    <h2>CHOOSE YOUR ROOM</h2>
-    <p>BOTH DOORS ARE UNLOCKED. ONLY ONE OF THEM IS KIND.</p>
+    <h2>CHOOSE YOUR CELL</h2>
+    <p>BOTH DOORS ARE UNLOCKED. NEITHER ONE GIVES YOU YOUR BAGS BACK.</p>
   </div>
   <div class="gate-grid" id="rooms">
     <div class="door interrogation" data-room="interrogation">
@@ -99,8 +101,8 @@
       <div class="veil"></div>
       <div class="content">
         <div class="kind">/ SMALL ROOM · LOW LIGHT</div>
-        <h3>THE INTERROGATION ROOM</h3>
-        <p>One bulb. One table. One chair too many. The walls are close and the questions are closer. Whatever you say in here is on the record.</p>
+        <h3>THE LIQUIDATION ROOM</h3>
+        <p>One bulb. One table. One chair too many. The Black Bull wants to know exactly when you sold, and why. Whatever you say in here is printed on-chain.</p>
         <span class="enter">STEP INSIDE ▸</span>
       </div>
     </div>
@@ -108,9 +110,9 @@
       <canvas class="scene" id="doorField"></canvas>
       <div class="veil"></div>
       <div class="content">
-        <div class="kind">/ OPEN YARD · MORNING LIGHT</div>
-        <h3>THE GREENFIELD</h3>
-        <p>Out back, the grass is wet and the fence is tall. Morning sun, fresh air, room to run. The freest you'll feel without actually being free.</p>
+        <div class="kind">/ OPEN PEN · GREEN CANDLES</div>
+        <h3>THE GREEN CANDLE YARD</h3>
+        <p>Out back, the grass is green and so is the chart on the tower screen — the run you sold before. Fresh air, room to cope. The closest you'll get to your old bags.</p>
         <span class="enter">STEP OUTSIDE ▸</span>
       </div>
     </div>
@@ -128,11 +130,11 @@
   </div>
   <aside class="cc-panel">
     <h2>INTAKE & PROCESSING</h2>
-    <div class="sub">ASSEMBLE INMATE — ALL PARTS REQUIRED</div>
+    <div class="sub">ASSEMBLE PAPER HAND — ALL PARTS REQUIRED</div>
 
     <div class="cc-group">
       <label class="cc-label" for="ccName">Inmate name</label>
-      <input class="cc-name" id="ccName" maxlength="16" placeholder="JOHN DOE" value="JOHN DOE">
+      <input class="cc-name" id="ccName" maxlength="16" placeholder="PAPER HAND" value="PAPER HAND">
     </div>
 
     <div class="cc-group" role="group" aria-label="Skin tone">
@@ -170,7 +172,7 @@
 
     <div class="cc-actions">
       <button class="btn ghost" id="ccRandom">RANDOMIZE</button>
-      <button class="btn" id="ccConfirm">DO MY TIME ▸</button>
+      <button class="btn" id="ccConfirm">SERVE MY SENTENCE ▸</button>
     </div>
   </aside>
 </section>
@@ -181,12 +183,12 @@
   <div class="hud">
     <div class="hud-top">
       <div class="room-badge" id="roomBadge">
-        ROOM
+        CELL
         <span id="roomSub">—</span>
       </div>
       <div class="right">
         <div class="pill" id="walletPill"><button id="pillWallet">CONNECT WALLET</button></div>
-        <div class="pill live">YOU ARE BEING WATCHED</div>
+        <div class="pill live">THE BULL IS WATCHING</div>
       </div>
     </div>
 
@@ -194,12 +196,13 @@
       <div><b>MOVE</b> <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span></div>
       <div><b>JUMP</b> <span class="key">␣</span> &nbsp; <b>SIT</b> <span class="key">F</span></div>
       <div><b>LOOK</b> drag mouse &nbsp; <b>CHAT</b> <span class="key">T</span></div>
+      <div><b>SHOOT</b> <span class="key">E</span> &nbsp; <b>TALK</b> <span class="key">F</span> near an inmate</div>
     </div>
 
     <div class="chat-dock">
       <div class="chat-log" id="chatLog"></div>
       <div class="chat-input-row">
-        <input class="chat-input" id="chatInput" placeholder="Say something to the room…">
+        <input class="chat-input" id="chatInput" placeholder="Explain your sell to the Bull…">
         <button class="chat-mic" id="chatMic" title="Hold to talk">MIC</button>
         <button class="chat-send" id="chatSend">SEND</button>
       </div>

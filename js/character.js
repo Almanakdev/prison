@@ -25,7 +25,7 @@ export const HEIGHTS = [`5'4"`, `5'7"`, `5'10"`, `6'1"`, `6'4"`];
 // default config
 export function defaultConfig() {
   return {
-    name: 'JOHN DOE',
+    name: 'PAPER HAND',
     skin: SKIN_TONES[1],
     hairStyle: 'SHORT',
     hairColor: HAIR_COLORS[1],
@@ -38,8 +38,8 @@ export function defaultConfig() {
 
 export function randomConfig() {
   const pick = a => a[Math.floor(Math.random() * a.length)];
-  const names = ['SCARFACE', 'BIG TONY', 'THE DIGGER', 'LOWBALL', 'WHISPER',
-                 'PAPERHANDS', 'RUGGED', 'NO.7', 'COLD CARL', 'TRENCH'];
+  const names = ['PAPERHANDS', 'SOLD@2X', 'EXIT LIQ', 'TOP SIGNAL', 'WEAK HANDS',
+                 'JEET', 'SOLD EARLY', 'NGMI', 'FUMBLER', 'COLD FEET'];
   return {
     name: pick(names),
     skin: pick(SKIN_TONES),
@@ -254,6 +254,159 @@ function shade2(material) {
   const c = material.color.clone();
   c.offsetHSL(0, 0, -0.12);
   return new THREE.MeshStandardMaterial({ color: c, flatShading: true, roughness: 0.9 });
+}
+
+// ============================================================
+// Build THE BLACK BULL — a voxel bull warden (echoes the logo).
+// Returns { group, pivots } compatible with the NPC animator
+// (pivots.torso for breathe, pivots.head, pivots.root).
+// ============================================================
+export function buildBull() {
+  const root = new THREE.Group();
+  const torso = new THREE.Group();
+  root.add(torso);
+
+  const hide = mat('#1c1f24', { rough: 0.9 });
+  const hideDark = mat('#15181c', { rough: 0.95 });
+  const leather = mat('#6b4a35', { rough: 0.8 });
+  const muzzle = mat('#7a5538', { rough: 0.85 });
+  const muzzleDark = mat('#5f4129', { rough: 0.85 });
+  const gold = mat('#d8b23e', { metal: 0.6, rough: 0.35 });
+  const horn = mat('#6b4a35', { rough: 0.7 });
+  const hornTip = mat('#8a6244', { rough: 0.7 });
+  const red = mat('#c0392b', { emissive: '#c0392b', emissiveIntensity: 0.4 });
+
+  // ---- BODY (broad shoulders, like the logo) ----
+  box(torso, 0.95, 0.8, 0.42, 0, 1.15, 0, hide);        // chest
+  box(torso, 1.18, 0.34, 0.46, 0, 1.46, 0, hide);       // shoulders / traps
+  // leather harness straps crossing the chest
+  box(torso, 0.16, 0.92, 0.46, -0.28, 1.2, 0.03, leather);
+  box(torso, 0.16, 0.92, 0.46,  0.28, 1.2, 0.03, leather);
+  // chest plate + gold ring emblem (echo of the logo)
+  box(torso, 0.5, 0.34, 0.05, 0, 1.0, 0.21, mat('#2a2118'));
+  const chestRing = new THREE.Mesh(new THREE.TorusGeometry(0.12, 0.04, 8, 16), gold);
+  chestRing.position.set(0, 1.0, 0.25); chestRing.castShadow = true; torso.add(chestRing);
+  // belt + hips
+  box(torso, 0.98, 0.1, 0.44, 0, 0.74, 0, mat('#2a2018'));
+  box(torso, 0.9, 0.24, 0.42, 0, 0.6, 0, hide);
+
+  // ---- HEAD (bull) ----
+  const head = new THREE.Group();
+  head.position.set(0, 1.72, 0);
+  torso.add(head);
+  box(head, 0.7, 0.6, 0.62, 0, 0.2, 0, muzzle);         // muzzle box
+  box(head, 0.72, 0.18, 0.64, 0, 0.52, 0, muzzleDark);  // forehead band
+  // ears
+  box(head, 0.18, 0.1, 0.16, -0.44, 0.34, 0, hide);
+  box(head, 0.18, 0.1, 0.16,  0.44, 0.34, 0, hide);
+  // eyes (dark slits with a red glint)
+  box(head, 0.13, 0.15, 0.06, -0.2, 0.26, 0.31, hideDark);
+  box(head, 0.13, 0.15, 0.06,  0.2, 0.26, 0.31, hideDark);
+  box(head, 0.06, 0.06, 0.04, -0.2, 0.26, 0.34, red);
+  box(head, 0.06, 0.06, 0.04,  0.2, 0.26, 0.34, red);
+  // snout + nostrils
+  box(head, 0.5, 0.26, 0.18, 0, -0.06, 0.27, hideDark);
+  box(head, 0.07, 0.08, 0.08, -0.12, -0.03, 0.36, mat('#0e1014'));
+  box(head, 0.07, 0.08, 0.08,  0.12, -0.03, 0.36, mat('#0e1014'));
+  // gold nose ring
+  const nose = new THREE.Mesh(new THREE.TorusGeometry(0.14, 0.045, 8, 16), gold);
+  nose.position.set(0, -0.14, 0.3); nose.castShadow = true; head.add(nose);
+  // horns sweeping out and up
+  [-1, 1].forEach(s => {
+    box(head, 0.2, 0.16, 0.2, s * 0.44, 0.42, 0, horn);
+    box(head, 0.16, 0.15, 0.16, s * 0.62, 0.6, 0, horn);
+    box(head, 0.13, 0.2, 0.13, s * 0.74, 0.84, 0, hornTip);
+  });
+
+  // ---- ARMS (dark hide, hanging) ----
+  const arm = (sx) => {
+    box(torso, 0.26, 0.72, 0.3, sx, 1.08, 0, hide);          // upper
+    box(torso, 0.22, 0.5, 0.26, sx, 0.6, 0, hide);           // forearm
+    box(torso, 0.25, 0.2, 0.29, sx, 0.34, 0.03, hideDark);   // fist
+  };
+  arm(-0.64); arm(0.64);
+
+  // ---- LEGS ----
+  const leg = (sx) => {
+    box(torso, 0.34, 0.62, 0.34, sx, 0.3, 0, hide);
+    box(torso, 0.36, 0.16, 0.46, sx, 0.05, 0.07, hideDark);  // hoof
+  };
+  leg(-0.24); leg(0.24);
+
+  root.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  root.scale.setScalar(1.12);   // a touch bigger than the inmates — imposing
+  return { group: root, pivots: { root, torso, head } };
+}
+
+// ============================================================
+// Build a CRAWLING (quadruped) black bull — roams the yard on all
+// fours. Returns { group, pivots } with four leg pivots for a gait.
+// ============================================================
+export function buildBullQuad() {
+  const root = new THREE.Group();
+  const body = new THREE.Group();
+  root.add(body);
+
+  const hide = mat('#1c1f24', { rough: 0.9 });
+  const hideDark = mat('#15181c', { rough: 0.95 });
+  const muzzle = mat('#7a5538', { rough: 0.85 });
+  const muzzleDark = mat('#5f4129', { rough: 0.85 });
+  const gold = mat('#d8b23e', { metal: 0.6, rough: 0.35 });
+  const horn = mat('#6b4a35', { rough: 0.7 });
+  const hornTip = mat('#8a6244', { rough: 0.7 });
+  const red = mat('#c0392b', { emissive: '#c0392b', emissiveIntensity: 0.4 });
+  const black = mat('#0e1014');
+
+  const BY = 1.0;   // body centre height
+  // ---- TORSO ----
+  box(body, 0.95, 0.8, 1.7, 0, BY, 0, hide);                 // barrel
+  box(body, 1.02, 0.5, 0.7, 0, BY + 0.32, 0.4, hide);        // shoulder hump
+  box(body, 0.92, 0.22, 0.5, 0, BY + 0.28, -0.72, hideDark); // rump
+
+  // ---- NECK + HEAD (front, +Z) ----
+  const head = new THREE.Group();
+  head.position.set(0, BY + 0.1, 1.1);
+  body.add(head);
+  box(head, 0.5, 0.5, 0.5, 0, 0, -0.2, hide);                // neck
+  box(head, 0.62, 0.54, 0.6, 0, -0.05, 0.25, muzzle);        // muzzle box
+  box(head, 0.64, 0.16, 0.62, 0, 0.2, 0.25, muzzleDark);     // brow band
+  box(head, 0.16, 0.1, 0.14, -0.4, 0.08, 0.2, hide);         // ears
+  box(head, 0.16, 0.1, 0.14,  0.4, 0.08, 0.2, hide);
+  box(head, 0.12, 0.14, 0.06, -0.18, 0, 0.54, hideDark);     // eyes
+  box(head, 0.12, 0.14, 0.06,  0.18, 0, 0.54, hideDark);
+  box(head, 0.05, 0.05, 0.04, -0.18, 0, 0.57, red);
+  box(head, 0.05, 0.05, 0.04,  0.18, 0, 0.57, red);
+  box(head, 0.46, 0.22, 0.14, 0, -0.22, 0.5, hideDark);      // snout
+  box(head, 0.06, 0.07, 0.07, -0.1, -0.2, 0.58, black);      // nostrils
+  box(head, 0.06, 0.07, 0.07,  0.1, -0.2, 0.58, black);
+  const nose = new THREE.Mesh(new THREE.TorusGeometry(0.13, 0.04, 8, 16), gold);
+  nose.position.set(0, -0.34, 0.52); nose.castShadow = true; head.add(nose);
+  [-1, 1].forEach(s => {                                      // horns
+    box(head, 0.18, 0.16, 0.18, s * 0.34, 0.28, 0.05, horn);
+    box(head, 0.15, 0.14, 0.15, s * 0.5, 0.42, 0.05, horn);
+    box(head, 0.12, 0.18, 0.12, s * 0.6, 0.6, 0.05, hornTip);
+  });
+
+  // ---- TAIL (back, -Z) ----
+  box(body, 0.1, 0.55, 0.1, 0, BY + 0.05, -0.95, hideDark);
+  box(body, 0.14, 0.16, 0.14, 0, BY - 0.32, -0.97, black);
+
+  // ---- LEGS (pivot at body underside so they can swing) ----
+  const mkLeg = (x, z) => {
+    const leg = new THREE.Group();
+    leg.position.set(x, BY - 0.4, z);
+    body.add(leg);
+    box(leg, 0.24, 0.34, 0.26, 0, -0.16, 0, hide);        // upper
+    box(leg, 0.2, 0.26, 0.22, 0, -0.45, 0, hideDark);     // lower
+    box(leg, 0.24, 0.1, 0.3, 0, -0.6, 0.03, black);       // hoof
+    return leg;
+  };
+  const legFL = mkLeg(0.34, 0.58), legFR = mkLeg(-0.34, 0.58);
+  const legBL = mkLeg(0.34, -0.58), legBR = mkLeg(-0.34, -0.58);
+
+  root.traverse(o => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } });
+  root.scale.setScalar(1.05);
+  return { group: root, pivots: { root, body, head, legFL, legFR, legBL, legBR } };
 }
 
 // ---- HAIR styles ----

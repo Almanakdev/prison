@@ -1,5 +1,6 @@
 // ============================================================
 // wallet.js — Solana (Phantom) connect with graceful fallback
+// Black Bull Prison: the wallet is how the Bull reads your sell.
 // ============================================================
 export class Wallet {
   constructor() {
@@ -38,11 +39,11 @@ export class Wallet {
         return { ok: false, error: 'Connection rejected.' };
       }
     }
-    // no wallet -> demo / John Doe identity
+    // no wallet -> demo / anonymous Paper Hand identity
     return {
       ok: false,
       noWallet: true,
-      error: 'No Solana wallet found. Walking in as John Doe.'
+      error: 'No Solana wallet found. Walking in as an anonymous Paper Hand.'
     };
   }
 

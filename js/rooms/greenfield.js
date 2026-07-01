@@ -1,5 +1,5 @@
 // ============================================================
-// rooms/greenfield.js — bright morning prison-yard greenfield
+// rooms/greenfield.js — THE GREEN CANDLE YARD (bright morning pen)
 // ============================================================
 import * as THREE from 'three';
 
@@ -128,6 +128,34 @@ export function buildGreenfield(scene) {
   tl.position.set(half + 3, 12, half + 3);
   scene.add(tl);
 
+  // ---- the JUMBOTRON: green candle chart they sold before ----
+  // two posts + dark screen, mounted high beyond the far fence
+  const screenX = 0, screenZ = -half - 2, screenY = 7;
+  vox(scene, 0.4, 10, 0.4, -5, 5, screenZ, '#3a3a42', { metal: 0.3 });
+  vox(scene, 0.4, 10, 0.4,  5, 5, screenZ, '#3a3a42', { metal: 0.3 });
+  vox(scene, 11, 6, 0.4, screenX, screenY, screenZ, '#0c100c'); // screen face
+  vox(scene, 11.4, 6.4, 0.2, screenX, screenY, screenZ - 0.25, '#15181c'); // bezel
+  // rising green candles drawn as little boxes
+  const candleGlow = new THREE.PointLight('#5cc24a', 0.0, 24);
+  candleGlow.position.set(screenX, screenY, screenZ + 1.5);
+  scene.add(candleGlow);
+  const candles = [];
+  const baseY = screenY - 2.4;
+  for (let i = 0; i < 9; i++) {
+    const h = 0.7 + i * 0.42 + Math.sin(i * 1.3) * 0.3;
+    const cx = screenX - 4.5 + i * 1.05;
+    const green = i % 5 === 3 ? '#c0392b' : '#5cc24a'; // one red dip, rest green
+    const body = vox(scene, 0.55, h, 0.12, cx, baseY + h / 2, screenZ + 0.22, green,
+      { emissive: green, emissiveIntensity: 0.5, noShadow: true });
+    // wick
+    vox(scene, 0.08, h * 0.5, 0.12, cx, baseY + h + h * 0.2, screenZ + 0.22, green,
+      { emissive: green, emissiveIntensity: 0.4, noShadow: true });
+    candles.push(body);
+  }
+  // "YOU SOLD HERE" arrow marker on the 4th (red) candle
+  vox(scene, 0.5, 0.5, 0.12, screenX - 4.5 + 3 * 1.05, baseY + 4.6, screenZ + 0.24, '#e8e4d8',
+    { emissive: '#e8e4d8', emissiveIntensity: 0.3, noShadow: true });
+
   // ---- props: basketball hoop, benches, watchtower shadow ----
   // hoop
   vox(scene, 0.2, 4, 0.2, 8, 2, 6, '#4a4c54', { metal: 0.4 });
@@ -173,9 +201,12 @@ export function buildGreenfield(scene) {
     bounds,
     spawn: new THREE.Vector3(0, 0, 4),
     spawnLook: new THREE.Vector3(0, 1, -10),
+    // basketball hoop — ring center + radius, used by the shooting mechanic
+    hoop: new THREE.Vector3(8, 3.1, 6.9),
+    hoopR: 0.34,
     npc: {
-      name: 'GUARD HOLLOWAY',
-      pos: new THREE.Vector3(half + 3, 0, half - 4),
+      name: 'GUARD MARGIN',
+      pos: new THREE.Vector3(3.5, 0, -2),
       color: '#3c5a2a'
     },
     animate: (t, dt) => {
@@ -183,6 +214,8 @@ export function buildGreenfield(scene) {
         c.position.x += c.userData.speed * dt;
         if (c.position.x > 36) c.position.x = -36;
       });
+      // jumbotron candle glow softly pulses
+      candleGlow.intensity = 0.7 + Math.sin(t * 2) * 0.3;
     }
   };
 }

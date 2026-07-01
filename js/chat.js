@@ -6,34 +6,38 @@
 
 const PERSONA = {
   interrogation: {
-    name: 'DETECTIVE GRIM',
-    color: '#9bb0c8',
+    name: 'THE BLACK BULL',
+    color: '#d8b23e',
     lines: [
-      "Sit down. We're going to be here a while.",
-      "Funny — everybody's innocent until I open the folder.",
-      "You think the trenches dug themselves? Start talking.",
-      "I've got all night. The bulb's got all night. You?",
-      "Every block you mined is in this file. Every one.",
-      "Nod all you want. The mirror's recording the silence too.",
-      "Confession's cheaper than a sentence. Think about it.",
-      "Where were you when the chain split? Don't lie to the lamp."
+      "Sit. Tell me the exact candle you sold The Black Bull on.",
+      "You had diamond hands for a week. Then you blinked.",
+      "Two X. You sold at two X. The chart did forty. I have the receipts.",
+      "Paper hands always say 'I was up'. Up isn't out, inmate.",
+      "Every wallet that jeeted is on the wall behind me. Yours is lit up.",
+      "You didn't get rugged. You rugged yourself and walked in here.",
+      "The ring in my nose cost more than your entire exit. Think on that.",
+      "Confess the sell and maybe — maybe — you graduate to the yard.",
+      "Fear is just a small loss with good PR. You let it close your position.",
+      "I don't jail holders. I jail the ones who folded. That's you."
     ],
-    greet: "So. The famous inmate finally walks in. Take a seat."
+    greet: "So. Another paper hand. Sit down and tell me when you sold The Black Bull."
   },
   field: {
-    name: 'GUARD HOLLOWAY',
-    color: '#9ed46a',
+    name: 'GUARD MARGIN',
+    color: '#5cc24a',
     lines: [
-      "Morning. Don't get used to the sunlight.",
-      "Fence is five meters and the wire bites. Don't test it.",
-      "You can run the track all you want — it loops back to the cell.",
-      "Fresh air's the one thing they let you keep out here.",
-      "Tower sees everything. Wave if you want, Holloway's bored.",
-      "Grass is wet. So's the inside of that block. Pick your damp.",
-      "Hoop's open. Losing at basketball still beats lockdown.",
-      "Yard time ends when the bell rings. It always rings."
+      "Morning. That green chart on the tower? That's the run you sold.",
+      "Fence is five meters. The candles on the other side are taller.",
+      "You can cope on the bench all you want — the bags don't come back.",
+      "Every green candle up there is a year you added to your sentence.",
+      "The Bull lets you watch the pump. That's the whole punishment.",
+      "Run the track. It loops. So does the regret.",
+      "Diamond hands got the penthouse. You got the pen. Funny how that works.",
+      "Hoop's open. Air-balling still beats checking your sell price.",
+      "Don't ask me the market cap. You sold your right to know.",
+      "Yard time ends when the bell rings. The chart keeps printing after."
     ],
-    greet: "Out for yard time, huh? Stay on this side of the wire."
+    greet: "Out for yard time? Stay off the fence and keep your eyes off the chart… you'll just sell again."
   }
 };
 
@@ -46,7 +50,7 @@ export class ChatSystem {
     this.toast = toast;
     this.room = 'field';
     this.persona = PERSONA.field;
-    this.playerName = 'JOHN DOE';
+    this.playerName = 'PAPER HAND';
 
     this._setupVoice();
     this.send.addEventListener('click', () => this._submit());
@@ -64,6 +68,12 @@ export class ChatSystem {
     this._addMsg(this.persona.name, this.persona.greet, 'npc');
   }
 
+  // a passing inmate (or any side character) says a line into the log
+  npcSay(name, text) {
+    this._addMsg(name, text, 'npc');
+    this._speak(text);
+  }
+
   _submit() {
     const text = this.input.value.trim();
     if (!text) return;
@@ -76,20 +86,36 @@ export class ChatSystem {
     // lightweight keyword-aware NPC
     const t = text.toLowerCase();
     let reply;
-    if (/escape|out|leave|free/.test(t))
+    if (/escape|out|leave|free|exit/.test(t))
       reply = this.room === 'interrogation'
-        ? "Escape? Cute. Nobody's left these trenches. You won't be the first."
-        : "Escape talk near the fence? Bold. The wire's listening too.";
-    else if (/innocent|didn'?t|not me/.test(t))
-      reply = "Sure. Tell it to the folder.";
+        ? "Exit? You already took your exit liquidity. There's no exit from that."
+        : "Only diamond hands walk out of here. You sold. You stay.";
+    else if (/sold|sell|profit|took profit|cashed|jeet/.test(t))
+      reply = this.room === 'interrogation'
+        ? "There it is. You said it yourself. Profit isn't a crime — selling THIS early is."
+        : "Yeah, you sold. So did everyone on this bench. Welcome to the pen.";
+    else if (/diamond|hold|holding|hodl|still in/.test(t))
+      reply = "Diamond hands don't end up in my prison. Nice try.";
+    else if (/pump|moon|chart|candle|price|market cap|ath/.test(t))
+      reply = this.room === 'interrogation'
+        ? "The chart pumped the second you clicked sell. They always do."
+        : "Look at it. Green all the way up. That could've been your sentence — paid out instead of served.";
+    else if (/innocent|didn'?t|not me|forced|fear|scared|panic/.test(t))
+      reply = "Fear sold those bags, not the market. Tell it to the wall.";
+    else if (/sorry|regret|mistake|wrong/.test(t))
+      reply = this.room === 'interrogation'
+        ? "Regret doesn't reopen a position. But it's a start. Keep talking."
+        : "Everyone in this yard is sorry. The chart doesn't read apologies.";
     else if (/help|please/.test(t))
       reply = this.room === 'interrogation'
-        ? "Help comes after the confession, not before."
-        : "Best help I can give you out here is shade. Go stand by the tree.";
-    else if (/hello|hey|hi\b|morning/.test(t))
+        ? "Help comes after the confession, not before. When did you sell?"
+        : "Best help out here is shade and silence. Don't open the chart.";
+    else if (/hello|hey|hi\b|morning|gm/.test(t))
       reply = this.persona.greet;
-    else if (/wallet|chain|solana|crypto/.test(t))
-      reply = "On-chain or not, your number's the same in here.";
+    else if (/ansem|wallet|chain|solana|crypto|token|bull/.test(t))
+      reply = this.room === 'interrogation'
+        ? "The Black Bull remembers every wallet that folded. On-chain forever. Including yours."
+        : "On-chain or not, the Bull already read your sell. Number's the same in here.";
     else
       reply = this.persona.lines[Math.floor(Math.random() * this.persona.lines.length)];
 

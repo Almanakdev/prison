@@ -22,4 +22,4 @@ http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(file)] || 'application/octet-stream' });
     res.end(data);
   });
-}).listen(PORT, () => console.log(`Prison Of Trenches → http://localhost:${PORT}`));
+}).listen(PORT, () => console.log(`Black Bull Prison → http://localhost:${PORT}`));
